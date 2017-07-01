@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@color/colorTitle"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:textColor="@android:color/white"
+        android:text="@string/search_title"
+        android:layout_marginLeft="@dimen/action_bar_margin"
+        android:textSize="@dimen/title_size"
+        android:textStyle="italic"
+        android:gravity="center_vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent" />
+
+    <SearchView
+        android:textColor="@android:color/white"
+        android:id="@+id/sv_key"
+        android:queryHint="@string/search_hint"
+        android:iconifiedByDefault="false"
+        android:layout_weight="4"
+        android:layout_width="0dp"
+        android:layout_height="match_parent">
+    </SearchView>
+
+    <Button
+        style="@style/Widget.AppCompat.Button.Colored"
+        android:textColor="@android:color/white"
+        android:id="@+id/bt_search"
+        android:clickable="false"
+        android:text="@string/search_text"
+        android:layout_weight="1"
+        android:layout_width="0dp"
+        android:layout_height="match_parent" />
+
+</LinearLayout>
