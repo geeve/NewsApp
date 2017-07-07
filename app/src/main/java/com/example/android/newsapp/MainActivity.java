@@ -72,6 +72,17 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     }
 
+    /**
+     * 判断网络连接是否存在
+     * @return boolean
+     */
+    public boolean isOnline() {
+        ConnectivityManager cm =
+                (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        return cm.getActiveNetworkInfo() != null &&
+                cm.getActiveNetworkInfo().isConnectedOrConnecting();
+    }
 
     /**
      * 初始化界面
@@ -91,11 +102,25 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         mSearchBt = (Button) findViewById(R.id.bt_search);
         mSearchBt.setClickable(false);
+
+        //加载适配器
+        mNewsAdapter = new NewsAdapter(this,0,new ArrayList<NewEntity>());
+        mList = (ListView)findViewById(R.id.lv_new_list);
+        mList.setAdapter(mNewsAdapter);
+        mList.setEmptyView(mEmptyView);
         //设置搜索按钮事件
         mSearchBt.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
+                //如果网络连接不存在则提示
+                if(!isOnline()){
+                    mNewsAdapter.setNews(new ArrayList<NewEntity>());
+                    mEmptyView.setText("There is no network!Please Check");
+                    return;
+                }
+
+                mProgressBar.setVisibility(View.VISIBLE);
                 //如果是第一次加载就启动Loader，反之重启Loader
                 if(firstLoad) {
                     getSupportLoaderManager().initLoader(1, null, MainActivity.this).forceLoad();
@@ -129,11 +154,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
 
-        //加载适配器
-        mNewsAdapter = new NewsAdapter(this,0,new ArrayList<NewEntity>());
-        mList = (ListView)findViewById(R.id.lv_new_list);
-        mList.setAdapter(mNewsAdapter);
-        mList.setEmptyView(mEmptyView);
+
 
         //当下拉到listview底部时，自动加载下一页内容
         mList.setOnScrollListener(new AbsListView.OnScrollListener() {
